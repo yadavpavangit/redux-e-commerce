@@ -5,6 +5,7 @@ import { fetchProducts } from "../redux/productsSlice";
 
 function Products() {
   const products = useSelector((state) => state.products.products);
+  const cartItems = useSelector((state) => state.cart.items);
 
   const dispatch = useDispatch();
 
@@ -41,18 +42,21 @@ function Products() {
                   </p>
 
                   <div className="flex gap-3 items-center">
-                    <button
-                      className="w-full bg-green-500 text-white py-2 rounded-lg hover:bg-green-600 active:scale-95 transition-all duration-50"
-                      onClick={() => dispatch(addItem())}
-                    >
-                      Add to Cart
-                    </button>
-                    <button
-                      className="w-full bg-orange-700 text-white py-2 rounded-lg hover:bg-orange-800 transition"
-                      onClick={() => dispatch(removeItem())}
-                    >
-                      Remove Item
-                    </button>
+                    {cartItems.find((items) => items.id === product.id) ? (
+                      <button
+                        className="w-full bg-blue-50 bg-opacity-60 text-black py-2 rounded-lg hover:bg-blue-100 transition-all duration-150"
+                        onClick={() => dispatch(removeItem(product.id))}
+                      >
+                        Remove Item
+                      </button>
+                    ) : (
+                      <button
+                        className="w-full bg-green-500 text-white py-2 rounded-lg hover:bg-green-600 active:scale-95 transition-all duration-50"
+                        onClick={() => dispatch(addItem(product))}
+                      >
+                        Add to Cart
+                      </button>
+                    )}
                   </div>
                 </div>
               ))
