@@ -60,7 +60,7 @@ function Products() {
                   </div>
                 </div>
               ))
-            : "No products available"}
+            : "Loading..."}
         </div>
       </div>
     </>

@@ -1,18 +1,47 @@
 import { useDispatch, useSelector } from "react-redux";
-import { removeItem } from "../redux/addToCartSlice";
+import { clearCart, removeItem } from "../redux/addToCartSlice";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function CartItems() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const cardItems = useSelector((state) => state.cart.items);
+  const [cartProducts, setCartProducts] = useState(cardItems);
+
+  useEffect(() => {
+    setCartProducts(cardItems);
+  }, [cardItems]);
+
+  const manageQuantity = (id, value) => {
+    let qtnt = parseInt(value);
+    let cartTempItem = cardItems.map((item) =>
+      item.id == id ? { ...item, qtnt } : item,
+    );
+    setCartProducts(cartTempItem);
+  };
+
+  const orderPlace = (id) => {
+    dispatch(removeItem(id));
+    alert("Order Places");
+  };
+
+  const handleOrderAll = () => {
+    localStorage.clear();
+    dispatch(clearCart());
+    alert("All Order Placed");
+    navigate("/");
+  };
+
   return (
     <>
-      <div className="w-full h-screen pt-10">
+      <div className="w-full py-10">
         <h1 className="text-3xl font-bold">Cart Items</h1>
         <h2 className="text-end text-xl font-semibold">
-          Items: <span className="font-bold">{cardItems.length}</span>
+          Items: <span className="font-bold">{cartProducts.length}</span>
         </h2>
-        {cardItems.length > 0 ? (
-          cardItems.map((product) => (
+        {cartProducts.length > 0 ? (
+          cartProducts.map((product) => (
             <div
               key={product.id}
               className="flex my-10 items-top gap-4 bg-amber-100 px-3 py-2 rounded-lg shadow-md"
@@ -38,9 +67,25 @@ function CartItems() {
                   </button>
                 </div>
                 <div className="flex items-center justify-end gap-5">
-                  <p>Price: ₹{product.price}</p>
+                  <div className="flex gap-3 items-center">
+                    <input
+                      type="number"
+                      className="focus:outline-none border border-blue-200  w-10"
+                      value={product.qtnt || 1}
+                      min={1}
+                      onChange={(e) =>
+                        manageQuantity(product.id, e.target.value)
+                      }
+                    />
+                    <p>
+                      Price: ₹{product.qtnt * product.price || product.price}
+                    </p>
+                  </div>
                   <div className="flex gap-4">
-                    <button className="bg-green-500 text-white w-40 px-4 py-2 rounded-lg hover:bg-green-600 transition">
+                    <button
+                      className="bg-green-500 text-white px-3 py-2 rounded-lg hover:bg-green-600 transition"
+                      onClick={() => orderPlace(product.id)}
+                    >
                       Buy Now
                     </button>
                   </div>
@@ -53,6 +98,28 @@ function CartItems() {
             No items in cart 0️⃣
           </div>
         )}
+        <hr />
+        <div className="py-3 my-3 px-2 flex justify-between text-center lg:text-end">
+          {cardItems.length > 1 && (
+            <button
+              className="bg-blue-600 px-3 py-2 rounded-lg text-xl font-medium text-white"
+              onClick={handleOrderAll}
+            >
+              Order All
+            </button>
+          )}
+
+          <h3 className="text-xl font-bold">
+            Total: ₹
+            {cartProducts
+              .reduce(
+                (sum, item) =>
+                  item.qtnt ? sum + item.price * item.qtnt : sum + item.price,
+                0,
+              )
+              .toFixed(2)}
+          </h3>
+        </div>
       </div>
     </>
   );
