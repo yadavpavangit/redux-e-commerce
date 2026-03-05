@@ -1,11 +1,11 @@
-import React, { use } from "react";
 import { featuredProducts } from "../constant/data";
 import { NavLink } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { addItem } from "../redux/addToCartSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { addItem, removeItem } from "../redux/addToCartSlice";
 
 function Home() {
   const dispatch = useDispatch();
+  const cartItems = useSelector((state) => state.cart.items);
   return (
     <>
       <div className="bg-gray-100">
@@ -46,12 +46,21 @@ function Home() {
                 <p className="text-green-600 font-bold mb-4">
                   ₹{product.price}
                 </p>
-                <button
-                  className="w-full bg-green-500 text-white py-2 rounded-lg hover:bg-green-600 transition"
-                  onClick={() => dispatch(addItem(product))}
-                >
-                  Add to Cart
-                </button>
+                {cartItems.find((item) => item.id === product.id) ? (
+                  <button
+                    className="w-full bg-blue-50 bg-opacity-60 text-black py-2 rounded-lg hover:bg-blue-100 transition-all duration-150"
+                    onClick={() => dispatch(removeItem(product.id))}
+                  >
+                    remove
+                  </button>
+                ) : (
+                  <button
+                    className="w-full bg-green-500 text-white py-2 rounded-lg hover:bg-green-600 transition-all duration-100"
+                    onClick={() => dispatch(addItem(product))}
+                  >
+                    Add to Cart
+                  </button>
+                )}
               </div>
             ))}
           </div>
