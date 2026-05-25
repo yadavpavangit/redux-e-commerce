@@ -8,7 +8,7 @@ function Home() {
   const cartItems = useSelector((state) => state.cart.items);
   return (
     <>
-      <div className="bg-gray-100">
+      <div className="bg-gray-100 py-10">
         {/* HERO SECTION */}
         <section className="text-center py-20 bg-linear-to-r from-green-500 to-emerald-600 text-white">
           <h1 className="text-4xl md:text-5xl font-bold mb-4">
@@ -65,6 +65,29 @@ function Home() {
             ))}
           </div>
         </section>
+
+        <div className="relative w-full h-96 bg-white mt-10">
+          <img
+            src="./images/products.jpg"
+            className="w-full h-full object-cover"
+          />
+
+          <div className="absolute inset-0 flex justify-center items-center">
+            <div className="bg-white text-black p-10 rounded-xl max-w-3xl text-center">
+              <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Quod,
+                doloremque? Ab ullam velit reiciendis. Dolorum velit soluta
+                perspiciatis quasi incidunt vel debitis in totam quis. Rem quis
+                consequuntur id debitis ullam deserunt placeat, facilis
+                dignissimos maxime delectus optio voluptatibus qui? Velit eum
+                est ab ducimus aperiam molestias hic ut dolorum!
+              </p>
+
+              <h2 className="text-2xl font-bold mt-4">Pavan Yadav</h2>
+              <span>CEO, Redux E-store</span>
+            </div>
+          </div>
+        </div>
       </div>
     </>
   );

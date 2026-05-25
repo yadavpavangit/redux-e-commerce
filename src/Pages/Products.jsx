@@ -26,6 +26,12 @@ function Products() {
       : products.filter((p) => selectedCategories.includes(p.category));
   return (
     <div className="min-h-screen bg-gray-100 py-10 px-6 md:px-16">
+      <button
+        onClick={() => navigate("/")}
+        className="mb-8 text-blue-600 hover:underline flex items-center gap-2"
+      >
+        ← Back to home
+      </button>
       <h1 className="text-4xl font-bold text-center mb-10">Our Products 🛒</h1>
 
       <div className="flex flex-col md:flex-row gap-10">

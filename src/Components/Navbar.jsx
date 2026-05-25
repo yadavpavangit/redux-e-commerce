@@ -16,6 +16,9 @@ function Navbar() {
           <NavLink to="/" className="hover:text-yellow-300 transition">
             Home
           </NavLink>
+          <NavLink to="/about" className="hover:text-yellow-300 transition">
+            About
+          </NavLink>
           <NavLink to="/products" className="hover:text-yellow-300 transition">
             Products
           </NavLink>
